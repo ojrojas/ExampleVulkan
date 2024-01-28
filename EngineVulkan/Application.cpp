@@ -22,6 +22,11 @@ namespace EngineVulkan
 
 	void Application::CleanUp()
 	{
+		if (_vulkanInstance._enableValidationLayers)
+			_vulkanInstance.DestroyDebugUtilsMessengerEXTApp();
+
+		vkDestroyInstance(_vulkanInstance.GetVkInstance(), nullptr);
+
 		glfwDestroyWindow(_vulkanInstance.GetWindow());
 
 		glfwTerminate();

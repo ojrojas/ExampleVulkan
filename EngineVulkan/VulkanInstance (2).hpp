@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <vector>
 #include <iostream>
-#include <map>
+
 
 namespace EngineVulkan
 {
@@ -32,8 +32,8 @@ namespace EngineVulkan
 		GLFWwindow* GetWindow() const { return _window; }
 		VkInstance GetVkInstance() const { return _instance; }
 
-		void DestroyDebugUtilsMessengerEXTApp() {
-			DestroyDebugUtilsMessengerEXT(_instance, _debugMessenger, nullptr);
+		void DestroyDebugUtilsMessengerEXT() const {
+			vkDestroyDebugUtilsMessengerEXT(_instance, _debugMessenger, nullptr);
 		}
 
 	private:
@@ -46,8 +46,6 @@ namespace EngineVulkan
 		std::vector<const char*> GetRequiredExtensions();
 
 		VkInstance _instance;
-		VkPhysicalDevice _physicalDevice = VK_NULL_HANDLE;
-		VkDevice _device;
 
 		void CreateInstance();
 
@@ -58,6 +56,7 @@ namespace EngineVulkan
 
 
 		bool CheckValidationLayerSupport();
+
 
 		static VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(
 			VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
@@ -74,14 +73,10 @@ namespace EngineVulkan
 			pDebugMessenger);
 
 		void DestroyDebugUtilsMessengerEXT(VkInstance instance,
-			VkDebugUtilsMessengerEXT debugMessenger, 
-			const VkAllocationCallbacks* pAllocator);
+			VkDebugUtilsMessengerEXT debugMessenger, const
+			VkAllocationCallbacks* pAllocator);
 
 		void PopulateMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT &createInfo);
 
-		void PickPhysicalDevice();
-		bool IsDeviceSuitable(VkPhysicalDevice physicalDevice);
-
-		uint32_t FindQueueFamilies(VkPhysicalDevice physicalDevice);
 	};
 }
