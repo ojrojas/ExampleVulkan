@@ -23,5 +23,9 @@ namespace EngineVulkan
 		int _width;
 		int _height;
 
+		VkInstance _instance;
+
+		void CreateInstance();
+
 	};
 }

@@ -22,5 +22,8 @@ namespace EngineVulkan
 
 	void Application::CleanUp()
 	{
+		glfwDestroyWindow(_vulkanInstance.GetWindow());
+
+		glfwTerminate();
 	}
 }
