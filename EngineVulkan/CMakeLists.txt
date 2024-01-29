@@ -2,7 +2,7 @@ project(EngineVulkan)
 add_library(EngineVulkan STATIC 
 	"Application.cpp"
 	"stb_image.cpp" 
-	"tiny_object_loader.cpp" 
+	"EngineVulkanTypes.hpp"
 	"VulkanInstance.hpp"
 	"VulkanInstance.cpp")
 

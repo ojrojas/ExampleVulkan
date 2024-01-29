@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include <map>
+#include "EngineVulkanTypes.hpp"
 
 namespace EngineVulkan
 {
@@ -82,6 +83,6 @@ namespace EngineVulkan
 		void PickPhysicalDevice();
 		bool IsDeviceSuitable(VkPhysicalDevice physicalDevice);
 
-		uint32_t FindQueueFamilies(VkPhysicalDevice physicalDevice);
+		QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice physicalDevice);
 	};
 }

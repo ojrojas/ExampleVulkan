@@ -209,9 +209,11 @@ namespace EngineVulkan
 		return deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU && deviceFeatures.geometryShader;
 	}
 
-	uint32_t VulkanInstance::FindQueueFamilies(VkPhysicalDevice physicalDevice)
+	QueueFamilyIndices VulkanInstance::FindQueueFamilies(VkPhysicalDevice physicalDevice)
 	{
+		QueueFamilyIndices indices;
 
+		return indices;
 	}
 
 }

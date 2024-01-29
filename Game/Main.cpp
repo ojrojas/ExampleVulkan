@@ -1,7 +1,8 @@
 #include <iostream>
 #include <EngineVulkan/Application.hpp>
 using namespace EngineVulkan;
-int main()
+
+int main() 
 {
 	std::cout << "Hello world" << std::endl;
 	static constexpr int WIDTH = 1024;
@@ -18,8 +19,5 @@ int main()
 		std::cout << e.what() << std::endl;
 	}
 	app.CleanUp();
-
-
-
 	return EXIT_SUCCESS;
 }
