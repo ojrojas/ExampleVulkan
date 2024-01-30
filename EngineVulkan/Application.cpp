@@ -25,6 +25,9 @@ namespace EngineVulkan
 		if (_vulkanInstance._enableValidationLayers)
 			_vulkanInstance.DestroyDebugUtilsMessengerEXTApp();
 
+		_vulkanInstance.DestroyLogicalDeviceApp();
+
+		_vulkanInstance.DestroySurfaceApp();
 		vkDestroyInstance(_vulkanInstance.GetVkInstance(), nullptr);
 
 		glfwDestroyWindow(_vulkanInstance.GetWindow());

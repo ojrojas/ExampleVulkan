@@ -19,5 +19,6 @@ int main()
 		std::cout << e.what() << std::endl;
 	}
 	app.CleanUp();
+
 	return EXIT_SUCCESS;
 }

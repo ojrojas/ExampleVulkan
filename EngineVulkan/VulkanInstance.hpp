@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include <map>
+#include <set>
 #include "EngineVulkanTypes.hpp"
 
 namespace EngineVulkan
@@ -37,6 +38,14 @@ namespace EngineVulkan
 			DestroyDebugUtilsMessengerEXT(_instance, _debugMessenger, nullptr);
 		}
 
+		void DestroyLogicalDeviceApp() {
+			vkDestroyDevice(_device, nullptr);
+		}
+
+		void DestroySurfaceApp() {
+			vkDestroySurfaceKHR(_instance, _surface, nullptr);
+		}
+
 	private:
 
 		GLFWwindow* _window = nullptr;
@@ -49,6 +58,10 @@ namespace EngineVulkan
 		VkInstance _instance;
 		VkPhysicalDevice _physicalDevice = VK_NULL_HANDLE;
 		VkDevice _device;
+
+		VkQueue graphicsQueue;
+		VkSurfaceKHR _surface;
+		VkQueue _presentQueue;
 
 		void CreateInstance();
 
@@ -80,9 +93,20 @@ namespace EngineVulkan
 
 		void PopulateMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT &createInfo);
 
+		// PhysicalDevice
 		void PickPhysicalDevice();
 		bool IsDeviceSuitable(VkPhysicalDevice physicalDevice);
-
 		QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice physicalDevice);
+		// PhysicalDevice
+
+		// LogicalDevice
+
+		void CreateLogicalDevice();
+
+		// LogicalDevice
+
+		// void CreateSurface
+		void CreateSurface();
+		// void CreateSurface
 	};
 }
