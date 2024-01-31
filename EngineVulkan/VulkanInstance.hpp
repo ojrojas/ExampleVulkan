@@ -1,13 +1,16 @@
 #pragma once
 #define GLFW_INCLUDE_VULKAN
+#include "EngineVulkanTypes.hpp"
+#include <algorithm>
+#include <cstdint> 
 #include <GLFW/glfw3.h>
-#include <string>
-#include <stdexcept>
-#include <vector>
 #include <iostream>
+#include <limits> 
 #include <map>
 #include <set>
-#include "EngineVulkanTypes.hpp"
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 namespace EngineVulkan
 {
@@ -15,9 +18,12 @@ namespace EngineVulkan
 	{
 	public:
 		const std::vector<const char *> _validationLayers = {
-			"VK_LAYER_KHRONOS_validation"};
+			"VK_LAYER_KHRONOS_validation"
+		};
+
 		const std::vector<const char *> _deviceExtensions = {
-			VK_KHR_SWAPCHAIN_EXTENSION_NAME, "VK_KHR_portability_subset"};
+			VK_KHR_SWAPCHAIN_EXTENSION_NAME
+		};
 
 #if NDEBUG
 		const bool _enableValidationLayers = false;
@@ -55,7 +61,7 @@ namespace EngineVulkan
 		int _width;
 		int _height;
 
-		std::vector<const char *> GetRequiredExtensions();
+		std::vector<const char *> GetRequiredExtensions() const;
 
 		VkInstance _instance;
 		VkPhysicalDevice _physicalDevice = VK_NULL_HANDLE;
@@ -112,5 +118,12 @@ namespace EngineVulkan
 		// void CreateSurface
 		void CreateSurface();
 		// void CreateSurface
+
+		//SwapChain 
+		SwapChainSupportDetails QuerySwapChainSupport(VkPhysicalDevice physicalDevice);
+		VkSurfaceFormatKHR ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+		VkPresentModeKHR ChooseSwapPresentMode(const std::vector<VkPresentModeKHR> availablePresentModes);
+		VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+		//SwapChain
 	};
 }
