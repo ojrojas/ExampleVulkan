@@ -2,15 +2,16 @@
 #define GLFW_INCLUDE_VULKAN
 #include "EngineVulkanTypes.hpp"
 #include <algorithm>
-#include <cstdint> 
+#include <cstdint>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <limits> 
+#include <limits>
 #include <map>
 #include <set>
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include "Utils.hpp"
 
 namespace EngineVulkan
 {
@@ -18,12 +19,13 @@ namespace EngineVulkan
 	{
 	public:
 		const std::vector<const char *> _validationLayers = {
-			"VK_LAYER_KHRONOS_validation"
-		};
+			"VK_LAYER_KHRONOS_validation"};
 
 		const std::vector<const char *> _deviceExtensions = {
-			VK_KHR_SWAPCHAIN_EXTENSION_NAME
-		};
+			VK_KHR_SWAPCHAIN_EXTENSION_NAME, "VK_KHR_portability_subset"};
+
+		std::vector<VkImage> _swapChainImages;
+		std::vector<VkImageView> _swapChainImageViews;
 
 #if NDEBUG
 		const bool _enableValidationLayers = false;
@@ -55,6 +57,17 @@ namespace EngineVulkan
 			vkDestroySurfaceKHR(_instance, _surface, nullptr);
 		}
 
+		void DestroySwapChainApp()
+		{
+			vkDestroySwapchainKHR(_device, _swapChain, nullptr);
+		}
+
+		void DestroyImagesViewsApp()
+		{
+			for (auto imageView : _swapChainImageViews)
+				vkDestroyImageView(_device, imageView, nullptr);
+		}
+
 	private:
 		GLFWwindow *_window = nullptr;
 		std::string _nameWindow;
@@ -70,6 +83,10 @@ namespace EngineVulkan
 		VkSurfaceKHR _surface;
 		VkQueue _graphicsQueue;
 		VkQueue _presentQueue;
+		VkSwapchainKHR _swapChain;
+
+		VkFormat _swapChainImageFormat;
+		VkExtent2D _swapChainExtent;
 
 		void CreateInstance();
 
@@ -119,11 +136,24 @@ namespace EngineVulkan
 		void CreateSurface();
 		// void CreateSurface
 
-		//SwapChain 
+		// SwapChain
 		SwapChainSupportDetails QuerySwapChainSupport(VkPhysicalDevice physicalDevice);
-		VkSurfaceFormatKHR ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+		VkSurfaceFormatKHR ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats);
 		VkPresentModeKHR ChooseSwapPresentMode(const std::vector<VkPresentModeKHR> availablePresentModes);
-		VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
-		//SwapChain
+		VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR &capabilities);
+		void CreateSwapChain();
+		// SwapChain
+
+		// ImageViews
+		void CreateImageViews();
+		// ImageViews
+
+		// GraphicsPipeline
+		void CreateGraphicsPipeline(std::string fileVertex, std::string fileFragment);
+		// GraphicsPipeline
+
+		// ShaderModule
+		VkShaderModule CreateShaderModule(const std::vector<char> &code);
+		// ShaderModule
 	};
 }

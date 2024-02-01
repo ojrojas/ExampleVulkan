@@ -22,6 +22,8 @@ namespace EngineVulkan
 
 	void Application::CleanUp()
 	{
+		_vulkanInstance.DestroySwapChainApp();
+		
 		if (_vulkanInstance._enableValidationLayers)
 			_vulkanInstance.DestroyDebugUtilsMessengerEXTApp();
 

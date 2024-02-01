@@ -3,6 +3,7 @@ add_library(EngineVulkan STATIC
 	"Application.cpp"
 	"stb_image.cpp" 
 	"EngineVulkanTypes.hpp"
+	"Utils.hpp"
 	"VulkanInstance.hpp"
 	"VulkanInstance.cpp")
 
