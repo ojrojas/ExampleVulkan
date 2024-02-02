@@ -27,7 +27,7 @@ namespace EngineVulkan
 		CreateLogicalDevice();
 		CreateSwapChain();
 		CreateImageViews();
-		CreateGraphicsPipeline("/Shaders/Triangle.vert.spv", "/Shaders/Triangle.frag.spv");
+		CreateGraphicsPipeline("Shaders/Triangle.vert.spv", "Shaders/Triangle.frag.spv");
 	}
 
 	void VulkanInstance::CreateInstance()
@@ -54,7 +54,7 @@ namespace EngineVulkan
 			createInfo.enabledLayerCount = static_cast<uint32_t>(_validationLayers.size());
 			createInfo.ppEnabledLayerNames = _validationLayers.data();
 			PopulateMessengerCreateInfo(debugCreateInfo);
-			createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT *)&debugCreateInfo;
+			createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&debugCreateInfo;
 		}
 		else
 		{
@@ -71,9 +71,9 @@ namespace EngineVulkan
 	}
 
 	VkResult VulkanInstance::CreateVkIntanceApp(
-		const VkInstanceCreateInfo *createInfo,
-		const VkAllocationCallbacks *allocator,
-		VkInstance *instance)
+		const VkInstanceCreateInfo* createInfo,
+		const VkAllocationCallbacks* allocator,
+		VkInstance* instance)
 	{
 		if (createInfo == nullptr || instance == nullptr)
 			return VK_ERROR_INITIALIZATION_FAILED;
@@ -88,11 +88,11 @@ namespace EngineVulkan
 		std::vector<VkLayerProperties> availableLayers(layerCount);
 		vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
 
-		for (const auto &layerName : _validationLayers)
+		for (const auto& layerName : _validationLayers)
 		{
 			bool layerFound = false;
 
-			for (const auto &layerProperty : availableLayers)
+			for (const auto& layerProperty : availableLayers)
 			{
 				if (strcmp(layerName, layerProperty.layerName) == 0)
 				{
@@ -108,11 +108,11 @@ namespace EngineVulkan
 		return true;
 	}
 
-	std::vector<const char *> VulkanInstance::GetRequiredExtensions() const
+	std::vector<const char*> VulkanInstance::GetRequiredExtensions() const
 	{
 		uint32_t glfwExtensionsCount = 0;
-		const char **glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionsCount);
-		std::vector<const char *> extensions(glfwExtensions, glfwExtensions + glfwExtensionsCount);
+		const char** glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionsCount);
+		std::vector<const char*> extensions(glfwExtensions, glfwExtensions + glfwExtensionsCount);
 
 		if (_enableValidationLayers)
 			extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
@@ -129,8 +129,8 @@ namespace EngineVulkan
 	VKAPI_ATTR VkBool32 VKAPI_CALL VulkanInstance::DebugCallback(
 		VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
 		VkDebugUtilsMessageTypeFlagsEXT messageType,
-		const VkDebugUtilsMessengerCallbackDataEXT *callbackData,
-		void *userData)
+		const VkDebugUtilsMessengerCallbackDataEXT* callbackData,
+		void* userData)
 	{
 		std::cerr << "Validations layerid: " << callbackData->pMessageIdName << " layers message: " << callbackData->pMessage << std::endl;
 		return VK_FALSE;
@@ -146,7 +146,7 @@ namespace EngineVulkan
 			throw std::runtime_error("Failed to set up debug message info");
 	}
 
-	void VulkanInstance::PopulateMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT &createInfo)
+	void VulkanInstance::PopulateMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo)
 	{
 		createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
 		createInfo.messageSeverity =
@@ -154,17 +154,17 @@ namespace EngineVulkan
 			VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
 			VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
 		createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
-								 VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
-								 VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+			VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
+			VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
 		createInfo.pfnUserCallback = DebugCallback;
 		createInfo.pUserData = nullptr; // Optional
 	}
 
-	VkResult VulkanInstance::CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT *createInfo, const VkAllocationCallbacks *allocator, VkDebugUtilsMessengerEXT *debugMessenger)
+	VkResult VulkanInstance::CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* createInfo, const VkAllocationCallbacks* allocator, VkDebugUtilsMessengerEXT* debugMessenger)
 	{
 		auto func = (PFN_vkCreateDebugUtilsMessengerEXT)
 			vkGetInstanceProcAddr(instance,
-								  "vkCreateDebugUtilsMessengerEXT");
+				"vkCreateDebugUtilsMessengerEXT");
 		if (func != nullptr)
 			return func(instance, createInfo, allocator, debugMessenger);
 		else
@@ -172,7 +172,7 @@ namespace EngineVulkan
 	}
 
 	void VulkanInstance::DestroyDebugUtilsMessengerEXT(VkInstance instance,
-													   VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks *allocator)
+		VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* allocator)
 	{
 		auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)
 			vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
@@ -193,7 +193,7 @@ namespace EngineVulkan
 		std::vector<VkPhysicalDevice> devices(deviceCount);
 		vkEnumeratePhysicalDevices(_instance, &deviceCount, devices.data());
 
-		for (const auto &device : devices)
+		for (const auto& device : devices)
 		{
 			if (IsDeviceSuitable(device))
 			{
@@ -229,7 +229,7 @@ namespace EngineVulkan
 
 		std::set<std::string> requiredExtensions(_deviceExtensions.begin(), _deviceExtensions.end());
 
-		for (const auto &extension : availableExtensions)
+		for (const auto& extension : availableExtensions)
 		{
 			requiredExtensions.erase(extension.extensionName);
 		}
@@ -246,7 +246,7 @@ namespace EngineVulkan
 		vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilies.data());
 
 		int i = 0;
-		for (const auto &queueFamily : queueFamilies)
+		for (const auto& queueFamily : queueFamilies)
 		{
 			if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
 				indices.graphicsFamily = i;
@@ -271,7 +271,7 @@ namespace EngineVulkan
 
 		std::vector<VkDeviceQueueCreateInfo> queueCreateInfos{};
 
-		std::set<uint32_t> uniqueQueueFamilies = {indices.graphicsFamily.value(), indices.presentFamily.value()};
+		std::set<uint32_t> uniqueQueueFamilies = { indices.graphicsFamily.value(), indices.presentFamily.value() };
 		float queuePriority = 1.0f;
 
 		for (uint32_t queueFamily : uniqueQueueFamilies)
@@ -343,9 +343,9 @@ namespace EngineVulkan
 			throw std::runtime_error("Failed to create window surface!");
 	}
 
-	VkSurfaceFormatKHR VulkanInstance::ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats)
+	VkSurfaceFormatKHR VulkanInstance::ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats)
 	{
-		for (auto &availableFormat : availableFormats)
+		for (auto& availableFormat : availableFormats)
 		{
 			if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB &&
 				availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
@@ -359,7 +359,7 @@ namespace EngineVulkan
 
 	VkPresentModeKHR VulkanInstance::ChooseSwapPresentMode(const std::vector<VkPresentModeKHR> availablePresentModes)
 	{
-		for (const auto &availablePresentMode : availablePresentModes)
+		for (const auto& availablePresentMode : availablePresentModes)
 		{
 			if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR)
 			{
@@ -369,7 +369,7 @@ namespace EngineVulkan
 		return VK_PRESENT_MODE_FIFO_KHR;
 	}
 
-	VkExtent2D VulkanInstance::ChooseSwapExtent(const VkSurfaceCapabilitiesKHR &capabilities)
+	VkExtent2D VulkanInstance::ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities)
 	{
 		if (capabilities.currentExtent.width !=
 			std::numeric_limits<uint32_t>::max())
@@ -383,14 +383,14 @@ namespace EngineVulkan
 
 			VkExtent2D actualExtent = {
 				static_cast<uint32_t>(width),
-				static_cast<uint32_t>(height)};
+				static_cast<uint32_t>(height) };
 
 			actualExtent.width = std::clamp(actualExtent.width,
-											capabilities.minImageExtent.width,
-											capabilities.maxImageExtent.width);
+				capabilities.minImageExtent.width,
+				capabilities.maxImageExtent.width);
 			actualExtent.height = std::clamp(actualExtent.height,
-											 capabilities.minImageExtent.height,
-											 capabilities.maxImageExtent.height);
+				capabilities.minImageExtent.height,
+				capabilities.maxImageExtent.height);
 
 			return actualExtent;
 		}
@@ -423,7 +423,7 @@ namespace EngineVulkan
 		createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
 		QueueFamilyIndices indices = FindQueueFamilies(_physicalDevice);
-		uint32_t queueFamilyIndices[] = {indices.graphicsFamily.value(), indices.presentFamily.value()};
+		uint32_t queueFamilyIndices[] = { indices.graphicsFamily.value(), indices.presentFamily.value() };
 		if (indices.graphicsFamily != indices.presentFamily)
 		{
 			createInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
@@ -486,16 +486,54 @@ namespace EngineVulkan
 		VkShaderModule vertShaderModule = CreateShaderModule(vertShaderCode);
 		VkShaderModule fragShaderModule = CreateShaderModule(fragShaderCode);
 
-		vkDestroyShaderModule(_device, fragShaderModule, nullptr);
+		VkPipelineShaderStageCreateInfo stageCreateInfos[2]{};
+
+		stageCreateInfos[0].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+		stageCreateInfos[0].stage = VK_SHADER_STAGE_VERTEX_BIT;
+		stageCreateInfos[0].module = vertShaderModule;
+		stageCreateInfos[0].pName = "main";
+
+		stageCreateInfos[1].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+		stageCreateInfos[1].stage = VK_SHADER_STAGE_FRAGMENT_BIT;
+		stageCreateInfos[1].module = fragShaderModule;
+		stageCreateInfos[1].pName = "main";
+
+		VkPipelineDynamicStateCreateInfo dynamicState{};
+		dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+		dynamicState.dynamicStateCount = static_cast<uint32_t>(_dynamicStates.size());
+		dynamicState.pDynamicStates = _dynamicStates.data();
+
+		VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
+		
+		vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+		vertexInputInfo.vertexBindingDescriptionCount = 0;
+		vertexInputInfo.pVertexBindingDescriptions = nullptr; // Optional
+		vertexInputInfo.vertexAttributeDescriptionCount = 0;
+		vertexInputInfo.pVertexAttributeDescriptions = nullptr; // Optional
+
+		VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
+		inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+		inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+		inputAssembly.primitiveRestartEnable = VK_FALSE;
+
+		VkViewport viewport{};
+		viewport.x = 0.0f;
+		viewport.y = 0.0f;
+		viewport.width = (float)_swapChainExtent.width;
+		viewport.height = (float)_swapChainExtent.height;
+		viewport.minDepth = 0.0f;
+		viewport.maxDepth = 1.0f;
+
 		vkDestroyShaderModule(_device, vertShaderModule, nullptr);
+		vkDestroyShaderModule(_device, fragShaderModule, nullptr);
 	}
 
-	VkShaderModule VulkanInstance::CreateShaderModule(const std::vector<char> &code)
+	VkShaderModule VulkanInstance::CreateShaderModule(const std::vector<char>& code)
 	{
 		VkShaderModuleCreateInfo createInfo{};
 		createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
 		createInfo.codeSize = code.size();
-		createInfo.pCode = reinterpret_cast<const uint32_t *>(code.data());
+		createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
 
 		VkShaderModule shaderModule;
 		if (vkCreateShaderModule(_device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS)

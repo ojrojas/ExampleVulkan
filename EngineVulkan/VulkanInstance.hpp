@@ -18,14 +18,20 @@ namespace EngineVulkan
 	class VulkanInstance
 	{
 	public:
-		const std::vector<const char *> _validationLayers = {
-			"VK_LAYER_KHRONOS_validation"};
+		const std::vector<const char*> _validationLayers = {
+			"VK_LAYER_KHRONOS_validation" };
 
-		const std::vector<const char *> _deviceExtensions = {
-			VK_KHR_SWAPCHAIN_EXTENSION_NAME, "VK_KHR_portability_subset"};
+		const std::vector<const char*> _deviceExtensions = {
+			VK_KHR_SWAPCHAIN_EXTENSION_NAME
+		};
 
 		std::vector<VkImage> _swapChainImages;
 		std::vector<VkImageView> _swapChainImageViews;
+
+		std::vector<VkDynamicState> _dynamicStates = {
+			VK_DYNAMIC_STATE_VIEWPORT,
+			VK_DYNAMIC_STATE_SCISSOR
+		};
 
 #if NDEBUG
 		const bool _enableValidationLayers = false;
@@ -39,7 +45,7 @@ namespace EngineVulkan
 		void InitializeWindow(int width, int height, std::string windowName);
 		void InitializeVulkan();
 
-		GLFWwindow *GetWindow() const { return _window; }
+		GLFWwindow* GetWindow() const { return _window; }
 		VkInstance GetVkInstance() const { return _instance; }
 
 		void DestroyDebugUtilsMessengerEXTApp()
@@ -69,12 +75,12 @@ namespace EngineVulkan
 		}
 
 	private:
-		GLFWwindow *_window = nullptr;
+		GLFWwindow* _window = nullptr;
 		std::string _nameWindow;
 		int _width;
 		int _height;
 
-		std::vector<const char *> GetRequiredExtensions() const;
+		std::vector<const char*> GetRequiredExtensions() const;
 
 		VkInstance _instance;
 		VkPhysicalDevice _physicalDevice = VK_NULL_HANDLE;
@@ -91,33 +97,33 @@ namespace EngineVulkan
 		void CreateInstance();
 
 		VkResult CreateVkIntanceApp(
-			const VkInstanceCreateInfo *createInfo,
-			const VkAllocationCallbacks *allocator,
-			VkInstance *instance);
+			const VkInstanceCreateInfo* createInfo,
+			const VkAllocationCallbacks* allocator,
+			VkInstance* instance);
 
 		bool CheckValidationLayerSupport();
 
 		static VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(
 			VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
 			VkDebugUtilsMessageTypeFlagsEXT messageType,
-			const VkDebugUtilsMessengerCallbackDataEXT *callbackData,
-			void *userData);
+			const VkDebugUtilsMessengerCallbackDataEXT* callbackData,
+			void* userData);
 
 		void SetupDebugMessenger();
 
 		VkResult CreateDebugUtilsMessengerEXT(
 			VkInstance instance,
-			const VkDebugUtilsMessengerCreateInfoEXT *pCreateInfo,
-			const VkAllocationCallbacks *pAllocator,
-			VkDebugUtilsMessengerEXT *pDebugMessenger);
+			const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
+			const VkAllocationCallbacks* pAllocator,
+			VkDebugUtilsMessengerEXT* pDebugMessenger);
 
 		void DestroyDebugUtilsMessengerEXT(
 			VkInstance instance,
 			VkDebugUtilsMessengerEXT debugMessenger,
-			const VkAllocationCallbacks *pAllocator);
+			const VkAllocationCallbacks* pAllocator);
 
 		void PopulateMessengerCreateInfo(
-			VkDebugUtilsMessengerCreateInfoEXT &createInfo);
+			VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 
 		// PhysicalDevice
 		void PickPhysicalDevice();
@@ -138,9 +144,9 @@ namespace EngineVulkan
 
 		// SwapChain
 		SwapChainSupportDetails QuerySwapChainSupport(VkPhysicalDevice physicalDevice);
-		VkSurfaceFormatKHR ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats);
+		VkSurfaceFormatKHR ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
 		VkPresentModeKHR ChooseSwapPresentMode(const std::vector<VkPresentModeKHR> availablePresentModes);
-		VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR &capabilities);
+		VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 		void CreateSwapChain();
 		// SwapChain
 
@@ -153,7 +159,7 @@ namespace EngineVulkan
 		// GraphicsPipeline
 
 		// ShaderModule
-		VkShaderModule CreateShaderModule(const std::vector<char> &code);
+		VkShaderModule CreateShaderModule(const std::vector<char>& code);
 		// ShaderModule
 	};
 }
